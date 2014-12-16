@@ -1,0 +1,37 @@
+{% extends "docbase.html.twig" %}
+{% block title %}Conventions de nomage{% endblock %}
+{% block content %}
+	<h3>Nomage des classes:</h3>
+	<p class="indent">
+		<span class="indent"></span>
+		Les classes que vous utiliserez sont des controleurs et leur nom est généré par la console. Il ne faut surtout pas le modifier ou Minimum ne pourra plus l'instancier avec le chemin habituel.
+	</p>
+	
+	<h3>Nomage des méthodes:</h3>
+	<p class="indent">
+		<span class="indent"></span>
+		Toutes les méthodes que vous créerez vous-même doivent se terminer par le mot Action. C'est comme ça que Minimum les reconnait. Si vous enlevez ce "Action", vous aurez une erreur disant que exempleAction est introuvable.
+	</p>
+	
+	<h3>Nomage des vues:</h3>
+	<p class="indent">
+		<span class="indent"></span>
+		Une vue est associée à une action. Cette association se fait via le nom de la vue qui sera le même que celui de l'action mais sans "Action". Ainsi Minimum associera la vue "exemple.html.twig" à l'action "exempleAction()".
+	</p>
+	
+	<h3>Nomage des dossiers dans /src:</h3>
+	<p class="indent">
+		<span class="indent"></span>Les dossiers situés dans src peuvent porter le nom que vous voulez. Assurez-vous simplement qu'il finisse par "Page" avec un 'P' majuscule, sinon il sera introuvable. Normalement ils sont générés par la console mais libre à vous de les modifier.
+	</p>
+	
+	<h3>Attention:</h3>
+	<p>
+		Encore une fois, je tiensà préciser que tous les noms, sauf ceux des actions que vous rajouterez par le futur, sont généras automatiquement par la console et qu'il est fort recommandé de ne pas y toucher, sauf si vous savez ce que vous faites. Rendez vous <a href="doc/start">ici</a> pour apprendre à utiliser la console et démarrer avec Minimum.
+	</p>
+{% endblock %}
+
+{% block scripts %}
+	<script type="text/javascript">
+		indice = 1;
+	</script>
+{% endblock %}

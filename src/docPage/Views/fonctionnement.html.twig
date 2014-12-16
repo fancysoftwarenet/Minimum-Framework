@@ -1,0 +1,131 @@
+{% extends "docbase.html.twig" %}
+{% block title %}Fonctionnement de Minimum{% endblock %}
+{% block content %}
+<h3>Fonctionnement global</h3>
+	<p>
+		Ici, nous allons détailler la façon dont fonctionne le framework. Ce n'est pas de la doc pour apprendre à s'en servir mais plutôt pour étudier le code. Il faut savoir que Minimum est un framework développé selon le modèle MVC. On aura donc une instance de controleur qui se chargera, avec la méthode appropriée, de retourner un tableau avec les bons paramètres pour une vue. Pour gérer ça, on a fait en sorte que n'importe quelle URL soit redirigée vers l'index.php. Cliquez sur le bouton pour voir le code:
+	</p>
+	
+	<input type="button" value="Montrer le code" class="expander"></input>
+	<pre class="expand brush:php">
+		include "resources/global_variables.php"; 
+		include "resources/functions.php"; 
+		include "app/src/Page/Controller/Controller.php"; 
+		include "app/plugins/plugins-enabled.php"; 
+ 
+		$cache = false; 
+ 
+		$urlExplode = explode("/", $_SERVER['REQUEST_URI']); 
+ 
+		$i = 0; 
+		$args = Array(); 
+ 
+		foreach($urlExplode as $urlParam){ 
+			if(strlen($urlParam)>0){ 
+				//echo $urlParam." ".$i."&lt;br&gt;"; 
+				if($i == 0){ 
+					$page = $urlParam; 
+				}else{ 
+					array_push($args, $urlParam); 
+				} 
+				 
+				$i++; 
+			} 
+		} 
+ 
+		if ( !isset($page)) 
+		{ 
+			$page = "index"; 
+		} 
+ 
+		require_once './resources/vendor/autoload.php'; //Indispensable: permet d'inclure TOUTES les ressources< />
+ 
+		$folder = $page."Page"; 
+ 
+		if ( count($urlExplode) > 0) //On supprime les cases "vides" de $urlExplode 
+		{ 
+			while ( count($urlExplode) > 0 && strlen($urlExplode[0]) <= 0 ) 
+			{ 
+				array_shift($urlExplode); 
+			} 
+		} 
+ 
+		if ( empty($urlExplode[1]) ) //Si il manque des pramètres dans $urlExplode, vérifie qu'il s'agit de l'index ou de la doc 
+		{ 
+			if ( !isset($urlExplode[0]) ) //Si $urlExplode est totalement vide, on envoie vers l'index 
+				array_push($urlExplode, "index"); 
+ 
+			if ( !isset($urlExplode[1]) && $urlExplode[0] != "doc" ) 
+				$urlExplode[0] = "index"; 
+ 
+			if ( !isset($urlExplode[1]) && $urlExplode[0] == "index") 
+				$urlExplode[1] = "default"; 
+ 
+			if ( !isset($urlExplode[1]) && $urlExplode[0] == "doc") 
+				$urlExplode[1] = "accueil"; 
+		} 
+ 
+		//On prépare le controlleur 
+		$controllerName = ucwords($urlExplode[0])."Controller"; 
+		array_shift($urlExplode); 
+ 
+		$action = strtolower($urlExplode[0])."Action"; 
+		$view = strtolower($urlExplode[0].".html.twig"); 
+		array_shift($urlExplode); 
+ 
+		$args = $urlExplode; 
+		//On prépare TWIG et donc on vérifie les matchs de route 
+			 
+		$loader=new Twig_Loader_Filesystem("./app/src/Page/Views"); 
+			 
+		if ($page == "index") 
+		{ 
+			include "./app/src/indexPage/Controller/indexController.php"; 
+			$loader->addPath('./app/src/'.$page.'Page/Views'); 
+			$loader->addPath("./app/extends/"); //Dossier des pages templates de la doc et de l'index 
+		} 
+		else //Si on n'est pas dans l'index 
+		{ 
+			if (file_exists('./src/'.$folder.'/Views/'.$view ) ) //Si la view existe  
+			{ 
+				$loader->addPath('./src/'.$folder.'/Views'); //Donne le dossier qui contient les vues 
+				include "./src/".strtolower($page)."Page/Controller/".strtolower($page)."Controller.php"; 
+			} 
+			else //Si aucune route ne matche 
+			{ 
+				$controller = new Controller; 
+				$loader->addPath("./app/extends/"); //Dossier des pages templates de la doc et de l'index 
+				$twig = new Twig_Environment($loader, array('cache' => $cache)); 
+ 
+				header('HTTP/1.0 404 Not Found'); 
+				echo $twig->render('e404.html.twig', $controller->e404Action($args)); 
+				return; 
+			} 
+ 
+			$loader->addPath("./extends"); 
+		} 
+ 
+		$controller = new $controllerName; 
+		$twig = new Twig_Environment($loader, array('cache' => $cache)); //L'environnement, prends le loader puis le dossier de cache 
+ 
+		echo ($twig->render($view, $controller->$action($args))); 
+	</pre>
+	
+	<p>
+		Cette redirection vers l'index est faite via une regexp dans le fichier .htaccess qui doit être à la racine du framework. L'URL sera en fait de la forme : http://machin.com/nomDeLaPage/nomDeLAction/argument1/argument2/... . Le nom de la page servira à instancier le bon controleur et le nom de l'action à appeler la méthode qui va générer la vue. Si la vue ou le controlleur n'existent pas, on renverra une erreur 404.
+	</p>
+	
+	<p>
+		Tous les controlleurs doivent hériter de la classe Controller car il contient toutes les méthodes de base. Une méthode, quelle qu'elle soit, prendra toujours en arguemtn le tableau des arguments passés dans l'URL. Tout ceci est généré par la console du framework.
+	</p>
+{% endblock %}
+
+
+
+{% block scripts %}
+	<script type="text/javascript">
+		indice = 2;
+	</script>
+	
+	<script src="extern/scripts/doc/expand.js"></script>
+{% endblock %}

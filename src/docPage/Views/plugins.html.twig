@@ -1,0 +1,86 @@
+{% extends "docbase.html.twig" %}
+{% block title %} Configurations des Plugins {% endblock %}
+{% block content %}
+	<h3>Fonctionnement des plugins</h3>
+	<p>
+		Minimum inclut un système de plugins permettant de générer, intégrer des plugins complexes et orientés objet.<br>
+		De base, minimum intègre deux plugins:
+		<ul style="margin-left: 20px;">
+			<li>PDO SQL - Support des bases de donnée PDO via un plugin permettant de rapidement faire appel à une base de donnée</li>
+			<li>LightOpenId - Possibilité de gérer les sessions OpenId et se connectant à un provider</li>
+		</ul>
+	</p>
+
+	<h3>Generer un plugin:</h3>
+	<p>
+		Afin de générer un plugin il vous faut saisir dans la console.php la commande generate:plugin.<br/>
+		La console va vous demander une multitude d'informations qu'il vous faudra renseigner.
+		<pre class="brush: bash">
+			root@vps96227:/var/www# php console generate:plugin
+			Nom plugin: Exemple									#Le nom de votre plugin.
+			Description du plugin: Un plugin d'exemple			#La description de votre plugin.
+			Fichier principal [main.php]: mainExemple.php		#Le nom de votre fichier main, /!\ n'oubliez pas l'extension .php.
+			Version [0.1]: 1									#La version de votre plugin.
+			Plugin privé [false]: false							#Les parametres de confidentialités de votre plugins.
+
+			Génération du plugin Exemple (1) en cours...		#Etat de la génération, ici en cours.
+			Génération du plugin Exemple (1) réussie !			#Etat de la génération, ici terminé.
+		</pre>
+	</p>
+
+	<h3>Creation du plugin:</h3>
+		<p>
+			Votre plugin généré, rendez vous dans le dossier /app/plugins/nomDeVotrePlugin afin de coder son fichier main.php.<br/>
+			Gardez bien à l'esprit que seul ce fichier sera importé dans l'index.<br/>
+			Voici un exemple de main.php :
+			<pre class="brush: php">
+				class SQL
+				{
+					private $_host = "localhost";
+					private $_user = "root";
+					private $_password = "";
+					private $_dbname = "dbname";
+
+					public function open(){
+						try {
+							$dns = "mysql:host={$this->_host};dbname={$this->_dbname}";
+							$utilisateur = $this->_user;
+							$motDePasse = $this->_password;
+							$connection = new PDO( $dns, $utilisateur, $motDePasse );
+
+							return $connection;
+						} catch ( Exception $e ) {
+							echo "Connection à MySQL impossible : ", $e->getMessage();
+							die();
+						}
+					}
+				}
+			</pre>
+
+			Normalement vous ne devriez pas toucher au fichier plugin.json car vous l'avez renseigné a l'aide de la console.<br/>
+			Cependant n'hésitez pas à verifier les informations dans le fichier plugin.json car il est crucial pour l'initialisation.<br/>
+		</p>
+
+	<h3>Initialisation du plugin:</h3>
+		<p>
+			Votre plugin doit impérativement contenir un fichier plugin.json renseigné, ce fichier s'est normalement créé lors de la génération du plugin, cependant vérifiez si c'est bien le cas.
+			Ce fichier sera analysé afin d'intégrer le plugin au framework.<br/>
+			Ce fichier doit contenir les différents détails concernant le plugin a savoir :
+			<pre class="brush: php">
+				"name": "Exemple",
+				"description": "Un plugin d'exemple",
+				"version": "1",
+				"main": "MainExemple.php",
+				"private": false
+			</pre>
+			La description ne change rien, elle est là à titre purement informatif.<br/>
+			Si le statut private est égal a true le plugin ne sera pas pris en compte.<br/>
+			Si toutes ces conditions sont remplies le plugin sera alors analysé, initialisé et prêt à être utilisé.<br/>
+		</p>
+{% endblock %}
+
+{% block scripts %}
+	<script type="text/javascript">
+		indice = 2;
+	</script>
+{% endblock %}

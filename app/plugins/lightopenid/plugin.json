@@ -1,0 +1,7 @@
+{
+    "name": "OpenID",
+    "description": "Librairie OpenID, pour integration",
+    "version": "0.1",
+    "main": "openid.php",
+    "private": "false"
+}

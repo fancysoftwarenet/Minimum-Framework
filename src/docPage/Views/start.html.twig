@@ -1,0 +1,115 @@
+{% extends "docbase.html.twig" %}
+{% block title %}Bien commencer avec Minimum {% endblock %}
+
+{% block content %}
+<h3>Introduction à Minimum</h3>
+
+<p>
+	Minimum est un framework PHP inspiré du modèle MVC, il offre une alternative assez légère aux frameworks actuels tout en assurant les fonctionnalités essentielles, telles que le routage, ou un moteur de rendu (twig).<br>
+	Minimum intègre un système de plugins assez simple, vous permettant de créer facilement vos plugins via la console du framework. De base plusieurs plugins sont livrés et permettent des fonctionnalités simples, comme la connexion à une base de donnée à travers un objet. Il est cependant possible de créer autant de plugins que vous le souhaitez.
+</p>
+
+<h3>Fonctionnalités</h3>
+
+<p>
+	<ul style="margin-left: 20px;">
+		<li>Routage intégré et automatique</li>
+		<li>Système de plugins simplifié et orienté objets</li>
+		<li>Console de génération de pages/plugins</li>
+		<li>Intégration de Twig</li>
+	</ul>
+</p>
+
+<h3>Arborescence</h3>
+
+<p>
+	<pre class="brush:bash">
+		app/					# Framework Core
+			bin/				# Fonctions Core du framework
+			plugins/			# Dossier des plugins
+			src/				# Controller par defaut (page 404)
+		extends/				# Elements extends de twig
+		extern/					# Ressources statiques de pages
+		ressources/				# Ressources nescessaires au fonctionnement du framework core
+		src/					# Sources du projet
+			defaultPage/		# La page d'accueil de votre site web
+			docPage/			# Le dossier qui contient la documentation
+			demoPage/			# Une page d'exemple
+	</pre>
+</p>
+
+<h3>Créer une page</h3>
+<p>
+	Tout Minimum est orienté autour de "Pages". Il est ainsi possible de générer des pages à travers la console.<br>
+
+	<pre class="brush:bash">
+		mister@linux:/var/www$ php console generate:page
+		Template [base]: base 								#Type de template souhaité
+		Nom de la page: user 								#Nom de la page (en minuscules)
+		Boucle des actions									#Nous allons ajouter les actions de notre controller
+		Ajouter une action: presentation					#La première action
+		Ajouter une action:									#Laisser de chanps vide pour stopper la boucle d'actions
+		La page truc vient d'être générée !
+	</pre>
+	De base, Minimum contient deux templates, base, un template vide, et html5 qui inclut directement le code minimal en HTML5. Vous pouvez vous même ajouter des templates dans le dossier "resources/templates/", ils seront automatiquement disponibles lors de la prochaine génération de page.<br>
+	Minimum intègre Twig, il est donc recommandé de gérer vos templates par Twig. Les fichiers devant être hérités (extends) de Twig se situent dans le répertoire extends/ du framework.
+</p>
+
+<p>
+	Concernant les actions, lorsque vous ajoutez une action par la console lors de la génération de votre page, celle ci est automatiquement ajoutée au controller et crée aussi la view associée.<br>
+	Voici le controleur généré après l'étape précédente:
+	<pre class="brush:php">
+		class UserController extends Controller				// Controller
+		{
+
+				public function presentationAction($args){	// Fonction correspondant une action générée par la console
+
+					return Array();							// Tableau retourné par le controller pour la vue
+				}
+
+		}
+	</pre>
+	Maintenant, nous pouvons modifier ces fichier pour que cette page nous présente, évidemment, je veux passer mon nom en argument pour adapter à l'utilisateur.<br>
+	Nous modifions donc notre controleur pour retrouner ce pseudo à notre vue:
+	<pre class="brush:php">
+		class UserController extends Controller				// Controller
+		{
+
+				public function presentationAction($args){	// Fonction correspondant une action générée par la console
+
+					return Array('pseudo' => $args[0]);	// Tableau retourné par le controller pour la vue, args[0] est le premier argument passé en paramètre dans l'URL
+				}
+
+		}
+	</pre>
+	La variable <span class="variablephp">$args</span> contient les arguments passés en paramètre dans l'URL, nous nous en servirons pour passer notre nom :)<br>
+	<pre class="brush:php">
+		&lt;!doctype html&gt;
+		&lt;html lang="fr"&gt;
+		&lt;head&gt;
+			&lt;meta charset="utf-8"&gt;
+			&lt;title&gt;Mon pseudo !&lt;/title&gt;
+		&lt;/head&gt;
+		&lt;body&gt;
+			Vous vous appelez &#123;&#123; pseudo &#125;&#125;
+		&lt;/body&gt;
+		&lt;/html&gt;
+	</pre>
+	Il ne nous reste plus qu'à afficher cette page. Nous nous rendons donc sur l'URL http://localhost/user/presentation/pseudo/ et le pseudo indiqué s'affiche !
+</p>
+
+<h3>Page d'accueil par défaut</h3>
+<p>
+	La page d'accueil par défaut sera TOUJOURS dans /src/defaultPage. C'est vers cette page que vous serez renvoyé lorsque votre URL ne comporte pas d'arguments. Donc http://www.machin.com/ renverra sur la page http://www.machin.com/default/default.
+	Les views de cette page sont bien sûr tout à fait modifiables. Libre à vous d'en créer et d'ajouter les actions nécessaires au controleur.<br/>
+	Le dossier /src/defaultPage ne doit donc surtout pas être détruit. Si vous le faites, la page d'accueil de votre site vous renverra une erreur 404.<br/>
+	<br/>
+</p>
+
+{% endblock %}
+
+{% block scripts %}
+	<script type="text/javascript">
+		indice = 0;
+	</script>
+{% endblock %}

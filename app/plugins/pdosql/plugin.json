@@ -1,0 +1,7 @@
+{
+    "name": "mysql",
+    "description": "Plugin de connexion a MySQL",
+    "version": "0.1",
+    "main": "sql.php",
+    "private": "false"
+}

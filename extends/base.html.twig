@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>{{ titre_page }}</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        {% block header_suppl %}{% endblock %}
+    </head>
+
+    <body>
+		
+		<h1>{% block title %}Ceci est un titre par défaut, s'il s'affiche, c'est que vous avez omis le block 'title' dans votre view{% endblock %}</h1>
+		
+		{% block content %}
+			<p>
+				Ceci est un contenu par défaut, s'il s'affiche, ce que vous avez omis le block 'content' dans votre view.
+				<br/>
+				<br/>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent quis elit erat. Sed rhoncus enim tristique nisi commodo, vel sodales nulla dapibus. Vestibulum mollis bibendum pulvinar. Vestibulum tristique vehicula leo nec condimentum. Suspendisse malesuada et ante in rutrum. Donec a laoreet velit, et tincidunt magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nunc ullamcorper, ex vel vehicula elementum, leo orci luctus mi, nec pharetra dolor risus vel ipsum. Donec interdum arcu eget augue tristique, nec bibendum metus convallis. Vivamus faucibus mollis placerat.
+
+Mauris sit amet pellentesque lacus. Nullam a ex blandit, ultrices ligula et, sollicitudin neque. Aliquam felis lacus, pretium consequat scelerisque sit amet, rhoncus non libero. Nulla pellentesque aliquet velit, quis pulvinar diam feugiat quis. Etiam posuere nunc ac lorem sagittis, ac suscipit odio auctor. Fusce rhoncus ipsum tortor, ut faucibus elit fermentum eget. Ut rhoncus porta turpis eget rhoncus. Sed vitae ultrices orci. Aliquam euismod feugiat gravida. In ac dui ante. Aenean feugiat aliquet massa, a euismod diam ultrices at. Donec egestas pellentesque vulputate. Proin non rutrum massa. Pellentesque interdum, metus lobortis tristique pellentesque, lacus enim congue sapien, sit amet viverra lacus sem in sem. Suspendisse id massa sit amet erat congue pretium in eu erat. Nunc facilisis vehicula auctor.
+
+Integer scelerisque pulvinar nisl at faucibus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nisi elit, malesuada id ligula sed, scelerisque pretium metus. Suspendisse rutrum eros at nulla laoreet, eget porta nulla interdum. Morbi a egestas mauris. Etiam interdum nunc vel mi molestie, eget rhoncus eros suscipit. Nullam at massa tincidunt, pharetra orci non, tempor tortor. Integer pretium lacinia vulputate. Maecenas vitae turpis in arcu pretium consectetur id id nulla. Cras id vestibulum dolor, ut rutrum erat. Phasellus pretium fermentum arcu, quis ullamcorper quam.
+
+Cras porttitor pharetra mollis. Nunc pharetra sapien quis est posuere ornare. Cras id nulla quis turpis scelerisque vestibulum non finibus lorem. Suspendisse dictum nulla a sapien blandit, a auctor nisi imperdiet. Donec pharetra purus et nulla sollicitudin condimentum. In varius, eros at ultrices facilisis, diam justo vestibulum justo, nec porta risus dui eu ex. Vestibulum viverra quis massa blandit viverra. Integer consectetur nulla ac congue vehicula. Ut vitae ex aliquet, rhoncus sapien a, ultricies metus. Ut tincidunt sapien sit amet eros porta, sed fermentum ex congue. Curabitur vehicula consectetur mauris, eu congue quam eleifend vitae. Aliquam lacinia bibendum nibh nec venenatis.
+
+Maecenas gravida tellus vel accumsan blandit. Donec est nulla, tempus ut leo vitae, placerat tristique urna. Pellentesque pellentesque ex et ipsum aliquam iaculis. Nullam ultricies magna nisi, imperdiet pretium tellus suscipit vulputate. Sed nisl ligula, lobortis et rutrum sit amet, pharetra sed arcu. Cras congue et odio sit amet rhoncus. Mauris egestas, ligula eu scelerisque blandit, nunc arcu dapibus lectus, commodo scelerisque quam nulla nec risus. 
+			</p>
+		{% endblock %}
+    </body>
+</html>

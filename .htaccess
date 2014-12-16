@@ -1,0 +1,4 @@
+RewriteEngine on
+Options +FollowSymlinks
+
+RewriteRule !(.*\.[a-zA-Z0-9]{1,3}) index.php [L]
