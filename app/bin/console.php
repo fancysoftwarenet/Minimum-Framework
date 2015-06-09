@@ -62,7 +62,7 @@ if($arg1[0] == "generate"){
                 foreach ($listActions as $action){
                     //echo "Action: {$action}\n"; // DEBUG
                     $args = '$args';
-                    fwrite($controllerAction, "\tpublic function {$action}Action($args){\n\t\t\n\t\treturn Array();\n\t}\n\n");     // On écrit le fichier controller avec la liste des actions
+                    fwrite($controllerAction, "\tpublic function {$action}Action($args){\n\t\t\n\t\treturn array();\n\t}\n\n");     // On écrit le fichier controller avec la liste des actions
 
                     copy($fichierView, "../../src/{$page}Page/Views/{$action}.html.twig");
                 }
